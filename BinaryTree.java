@@ -2,19 +2,23 @@
 public class BinaryTree {
     BNode root;
 
+    // Create an array of Nodes from an array of values.
+    // Add each to the tree
     public BinaryTree(int[] valueArray) {
         for (int i : valueArray) {
             BNode newNode = new BNode(i, null, null);
             addNode(newNode);
         }    
-         
     }
 
+    // Add nodes to tree
     public boolean addNode(BNode newNode) {
         if (root == null) {
             root = newNode;
             return true;
         }
+
+        // Find the place of each node and add it there.
         BNode curr = root;
         while (true) {
             if (newNode.value < curr.value) {
@@ -36,6 +40,7 @@ public class BinaryTree {
         }
     }
 
+    // Binary seach
     public BNode searchFor(int val) {
         BNode curr = root;
         while (true) {
@@ -57,6 +62,7 @@ public class BinaryTree {
         }
     }
 
+    // Recursively stringify in preorder
     public String preOrder(BNode curr) {
         String s = "";
         if (curr == null) {return "";}
@@ -66,22 +72,27 @@ public class BinaryTree {
         return s;
     }
 
+    // Cannot be called recursivley because BNode has its own toString()
     public String toString() {
         return preOrder(this.root);
     }
 
     
-    private static class BNode implements Comparable<BNode> {
+    // Implements comparable allows... well, it still works with out it.
+    // Why do peoople use this??
+    private static class BNode {// implements Comparable<BNode> {
         int value;
         BNode leftChild;
         BNode rightChild;
 
+        // Constuctor
         BNode(int value, BNode leftChild, BNode rightChild){
             this.value = value;
             this.leftChild = leftChild;
             this.rightChild = rightChild;
         }
 
+        // Bigger is positive, 0 is equal, less than is negative
         public int compareTo(BNode other) {
             return this.value - other.value;
         }
