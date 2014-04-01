@@ -1,3 +1,5 @@
+import java.lang.Math;
+
 public class AVLTree {
     BNode root;
 
@@ -11,6 +13,7 @@ public class AVLTree {
     }
 
     // Add nodes to tree
+    //TODO check for balance
     public boolean addNode(BNode newNode) {
         if (root == null) {
             root = newNode;
@@ -36,6 +39,40 @@ public class AVLTree {
                 return false; // value is equal and already in tree
             }
             
+        }
+    }
+    private static int getHeight(BNode curr) {
+        int leftH = 0;
+        int rightH = 0;
+        if (curr.leftChild != null) {
+            leftH = getHeight(curr.leftChild);
+        }
+        if (curr.rightChild != null) {
+            rightH = getHeight(curr.rightChild);
+        }
+        return 1 + Math.max(leftH, rightH);
+    }
+
+    private static boolean isBalanced(BNode curr) {
+        int leftH = 0;
+        int rightH = 0;
+        boolean leftBal = true;
+        boolean rightBal = true;
+        if (curr.leftChild != null){
+            leftH = getHeight(curr.leftChild);
+            leftBal = isBalanced(curr.leftChild);
+        }            
+        if (curr.rightChild != null) {
+            rightH = getHeight(curr.rightChild);
+            rightBal = isBalanced(curr.rightChild);
+        }
+        if (leftH == 0 && rightH ==0) {return true;}
+        int diff = leftH - rightH;
+        System.out.println(diff);
+        if (diff > 1 || diff < -1) {
+            return false;
+        } else {
+            return leftBal && rightBal; 
         }
     }
 
@@ -104,9 +141,11 @@ public class AVLTree {
 
     // For testing only
     public static void main(String[] args) {
-        int[] a = {3, 2, 4};
+        int[] a = {1, 2, 3, 4};
         AVLTree bt = new AVLTree(a); 
-        BNode two = bt.searchFor(3);
-        System.out.println(two.leftChild);
+        BNode three = bt.searchFor(3);
+        System.out.println(isBalanced(three));
+        BNode one = bt.searchFor(1);
+        System.out.println(isBalanced(one));
     }
 }
