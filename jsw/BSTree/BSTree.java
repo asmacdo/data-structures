@@ -15,52 +15,44 @@ public class BSTree<E extends Comparable<E>> {
         }
         
         Node curr = root;
+        int i;
         while (true) {
             int cmp = newNode.compareTo(curr);
             // newNode is less than curr
             if (cmp == -1) {
-                // if left space is available, place new node there
-                if (curr.leftChild == null) {
-                    curr.leftChild = newNode;
-                    curr.leftChild.height = curr.height + 1;
-                    return true;
-                // else move to leftChild and repeat
-                } else {
-                curr = curr.leftChild;
-                }
+                i = 0; // links to left 
             } else if (cmp == 1) {
-                if (curr.rightChild == null) {
-                    curr.rightChild = newNode;
-                    curr.rightChild.height = curr.height + 1;
-                    return true;
-                } else {
-                    curr = curr.rightChild;
-                }
+                i = 1; // links to right
+            } else { return false;} // must be 0, node is already there
+            if (curr.links[i]== null) {
+                curr.links[i] = newNode;
+                curr.links[i].height = curr.height + 1;
+                return true;
             } else {
-                return false; // values are == and already in tree.
+            curr = curr.links[i];
             }
         }
     }
 
     public Node searchFor(E data) {
         Node curr = root;
+        int i;
         while (true) {
             int cmp = data.compareTo((E)curr.data); 
             if (cmp == -1) {
-                if (curr.leftChild != null) {
-                    curr = curr.leftChild;
-                } else {
-                    return null;
-                }
+                i = 0;  
             } else if (cmp == 1) {
-                if (curr.rightChild != null) {
-                    curr = curr.rightChild;
-                } else {
-                    return null;
-                }
+                i = 1;
             } else if (cmp == 0) {
                 return curr;
-            } else { return null;}
+            } else {
+                return null;
+            }
+            if (curr.links[i] != null) {
+                curr = curr.links[i];
+            } else {
+                return null;
+            }
         }
     }
 
@@ -73,9 +65,9 @@ public class BSTree<E extends Comparable<E>> {
             pre += "    ";
         }
         // pre order recursion
-        String s = prettyPrint(curr.leftChild);
+        String s = prettyPrint(curr.links[0]); // leftChild
         s += pre + curr + "\n";
-        s += prettyPrint(curr.rightChild);
+        s += prettyPrint(curr.links[1]); // right child
         return s;
     }
 }

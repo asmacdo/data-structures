@@ -1,14 +1,12 @@
 public class Node<E extends Comparable<E>> {
     E data;
     int height;
-    Node leftChild;
-    Node rightChild;
-    
+    // array of links to other nodes. left, right, parent
+    Node[] links; 
     
     public Node(E data) {
         this.data = data;  
-        this.leftChild = null;
-        this.rightChild = null;
+        this.links = new Node[3];
         this.height = 0;
     }
 
