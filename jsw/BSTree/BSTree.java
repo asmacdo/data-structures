@@ -58,11 +58,11 @@ public class BSTree<E extends Comparable<E>> {
         return curr;
     }
 
-    public Node removeNode(E data) {
+    public boolean removeNode(E data) {
         // Find the node to remove
         Node curr = this.searchFor(data);
 
-        if (curr == null){ return null;} 
+        if (curr == null){ return false;} 
 
         // Internal Nodes
         if (curr.links[0] != null && curr.links[2] != null) {
@@ -77,34 +77,44 @@ public class BSTree<E extends Comparable<E>> {
 
             // remove old parental link
             curr.links[1].links[par] = null; 
-
             // copy old node fields to new node
             curr.links[0] = remove.links[0];
+            curr.links[0].links[1] = curr;
             curr.links[1] = remove.links[1];
             curr.links[2] = remove.links[2];
+            curr.links[2].links[1] = curr;
             curr.height = remove.height;
 
+
             if (remove == this.root) {this.root = curr;}
-            return remove;
+            return true;
         }
 
-        // PRE at least 1 of the nodes is null
-        // External nodes
-        int dir = (curr.links[0] == null) ? 0 : 2;
         int par = (curr.links[1].links[0] == curr) ? 0 : 2;
-
-        // no children
-        if (curr.links[dir] == null) {
+        if (curr.links[0] == null && curr.links[2] == null){
             curr.links[1].links[par] = null;
-            return curr;
-        } else { // 1 child
-            curr.links[dir].links[1] = curr.links[1];
-            curr.links[1].links[par] = curr.links[dir];
-            return curr;
+            return true;
         }
+        // 1 and only 1 of the nodes is null
+        // point to the child
+
+        int child = (curr.links[0] != null) ? 0 : 2;
+
+        curr.links[child].links[1] = curr.links[1];
+        curr.links[1].links[par] = curr.links[child];
+        System.out.println(curr.links[child].links[1]);
+        decrementHeight(curr.links[child]);
+        return true;
 
         
     }
+   
+    public void decrementHeight(Node curr) {
+        curr.height--;
+        if (curr.links[0] != null) {decrementHeight(curr.links[0]);}
+        if (curr.links[2] != null) {decrementHeight(curr.links[2]);}
+    }
+
 
     public String prettyPrint(Node curr) {
         String pre = "";

@@ -18,6 +18,9 @@ public class Tester {
         System.out.println(intTree.prettyPrint(intTree.root));
         intTree.addNode(6);
         System.out.println(intTree.prettyPrint(intTree.root));
-        
+        intTree.removeNode(8);
+        System.out.println(intTree.prettyPrint(intTree.root));
+        intTree.addNode(8);
+        System.out.println(intTree.prettyPrint(intTree.root));
     }
 }
