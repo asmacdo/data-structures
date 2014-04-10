@@ -105,7 +105,7 @@ public class BSTree<E extends Comparable<E>> {
         if (curr.links[2] != null) {decrementHeight(curr.links[2]);}
     }
 
-
+    // Print sideways with spaces proportional to height. Looks like a tree!
     public String prettyPrint(Node curr) {
         String pre = "";
         // base case
