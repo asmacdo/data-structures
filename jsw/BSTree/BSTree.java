@@ -72,43 +72,33 @@ public class BSTree<E extends Comparable<E>> {
             curr = curr.links[0];
             while (curr.links[2] != null) { curr = curr.links[2];}
 
-            // curr.links[1].links[par] will point to curr
-            int par = (curr.links[1].links[0] == curr) ? 0 : 2;
+            // remove node by copying over it, remove extra
+            removeNode((E)curr.data);
+            remove.data = curr.data;
+        } // not internal, has at least 1 null child
 
-            // remove old parental link
-            curr.links[1].links[par] = null; 
-            // copy old node fields to new node
-            curr.links[0] = remove.links[0];
-            curr.links[0].links[1] = curr;
-            curr.links[1] = remove.links[1];
-            curr.links[2] = remove.links[2];
-            curr.links[2].links[1] = curr;
-            curr.height = remove.height;
-
-
-            if (remove == this.root) {this.root = curr;}
-            return true;
-        }
-
+        // point parent to curr
         int par = (curr.links[1].links[0] == curr) ? 0 : 2;
+
+        // both links are null, remove parental link
         if (curr.links[0] == null && curr.links[2] == null){
             curr.links[1].links[par] = null;
             return true;
         }
-        // 1 and only 1 of the nodes is null
-        // point to the child
 
+        // 1 and only 1 of the nodes is null
+        // point to curr's child
         int child = (curr.links[0] != null) ? 0 : 2;
 
-        curr.links[child].links[1] = curr.links[1];
-        curr.links[1].links[par] = curr.links[child];
-        System.out.println(curr.links[child].links[1]);
-        decrementHeight(curr.links[child]);
+        curr.links[child].links[1] = curr.links[1]; //parent of child = parent
+        curr.links[1].links[par] = curr.links[child]; //child of parent = child
+        decrementHeight(curr.links[child]); // decrement all childrens' height
         return true;
 
         
     }
    
+    // recursion is simplest
     public void decrementHeight(Node curr) {
         curr.height--;
         if (curr.links[0] != null) {decrementHeight(curr.links[0]);}
