@@ -3,19 +3,19 @@ public class BSTree<E extends Comparable<E>> {
 
     // Create a node for each value and add it to the tree
     public BSTree(E[] dataArray) {
-        for (E ob: dataArray) {
-            Node newNode = new Node(ob);
-            addNode(newNode);
+        for (E data: dataArray) {
+            addNode(data);
         }
     }
 
-    public boolean addNode(Node newNode) {
+    public boolean addNode(E data) {
         // Add the first node
+        Node newNode = new Node(data);
         if (root == null) {
             root = newNode;
             return true;
         }
-        Node curr = root
+        Node curr = root;
 
         // compareTo returns -1 for less than, 0 for equal, 1 for greater
         // Because links[0] points to left child, links[2] points to
@@ -27,6 +27,7 @@ public class BSTree<E extends Comparable<E>> {
             // A spot for the new node is found. put it there.
             if (curr.links[cmp] == null) {
                 curr.links[cmp] = newNode;
+                newNode.links[1] = curr; // set parent
                 curr.links[cmp].height = curr.height + 1;
                 return true;
             } else {
@@ -55,6 +56,54 @@ public class BSTree<E extends Comparable<E>> {
         }
         // cmp == 1, so the data is a match, return current node
         return curr;
+    }
+
+    public Node removeNode(E data) {
+        // Find the node to remove
+        Node curr = this.searchFor(data);
+
+        if (curr == null){ return null;} 
+
+        // Internal Nodes
+        if (curr.links[0] != null && curr.links[2] != null) {
+            Node remove = curr;
+            
+            // Take the leftmost node of the ride child
+            curr = curr.links[0];
+            while (curr.links[2] != null) { curr = curr.links[2];}
+
+            // curr.links[1].links[par] will point to curr
+            int par = (curr.links[1].links[0] == curr) ? 0 : 2;
+
+            // remove old parental link
+            curr.links[1].links[par] = null; 
+
+            // copy old node fields to new node
+            curr.links[0] = remove.links[0];
+            curr.links[1] = remove.links[1];
+            curr.links[2] = remove.links[2];
+            curr.height = remove.height;
+
+            if (remove == this.root) {this.root = curr;}
+            return remove;
+        }
+
+        // PRE at least 1 of the nodes is null
+        // External nodes
+        int dir = (curr.links[0] == null) ? 0 : 2;
+        int par = (curr.links[1].links[0] == curr) ? 0 : 2;
+
+        // no children
+        if (curr.links[dir] == null) {
+            curr.links[1].links[par] = null;
+            return curr;
+        } else { // 1 child
+            curr.links[dir].links[1] = curr.links[1];
+            curr.links[1].links[par] = curr.links[dir];
+            return curr;
+        }
+
+        
     }
 
     public String prettyPrint(Node curr) {

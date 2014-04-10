@@ -1,7 +1,7 @@
 public class Node<E extends Comparable<E>> {
     E data;
     int height;
-    // array of links to other nodes. left, parent, right
+    // array of links to other nodes. right, parent, left 
     Node[] links; 
     
     public Node(E data) {
