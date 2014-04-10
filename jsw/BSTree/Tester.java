@@ -14,13 +14,13 @@ public class Tester {
         Node eight = intTree.searchFor(8);
 
         // Deletion
-        intTree.removeNode(6);
-        System.out.println(intTree.prettyPrint(intTree.root));
-        intTree.addNode(6);
-        System.out.println(intTree.prettyPrint(intTree.root));
+        //intTree.removeNode(6);
+        //System.out.println(intTree.prettyPrint(intTree.root));
+        //intTree.addNode(6);
+        //System.out.println(intTree.prettyPrint(intTree.root));
         intTree.removeNode(8);
         System.out.println(intTree.prettyPrint(intTree.root));
-        intTree.addNode(8);
-        System.out.println(intTree.prettyPrint(intTree.root));
+        //intTree.addNode(8);
+        //System.out.println(intTree.prettyPrint(intTree.root));
     }
 }

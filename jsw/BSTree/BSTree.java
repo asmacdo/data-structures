@@ -22,7 +22,7 @@ public class BSTree<E extends Comparable<E>> {
         // right child. This means that cmp will be the appropriate value 
         // to iterate though the array. This allows symmetric operations
         // to be combined into a single, simpler function.
-        int cmp = 1 - newNode.compareTo(curr);
+        int cmp = newNode.compareTo(curr) + 1;
         while (cmp != 1) {
             // A spot for the new node is found. put it there.
             if (curr.links[cmp] == null) {
@@ -33,10 +33,9 @@ public class BSTree<E extends Comparable<E>> {
             } else {
                 curr = curr.links[cmp];
                 // reset cmp and loop
-                cmp = 1 - newNode.compareTo(curr);
+                cmp = newNode.compareTo(curr) + 1;
             }
         }
-        // cmp == 1, so the new node is a duplicate. do not add
         return false;
     }
 
@@ -44,11 +43,11 @@ public class BSTree<E extends Comparable<E>> {
         Node curr = root;
         // As with addNode, the cmp variable is the index of the correct
         // child unless it is 1, in this case the node is found.
-        int cmp = 1 - data.compareTo((E)curr.data); 
+        int cmp = data.compareTo((E)curr.data) + 1; 
         while (cmp != 1) {
             if (curr.links[cmp] != null) {
                 curr = curr.links[cmp];
-                cmp = 1 - data.compareTo((E)curr.data); 
+                cmp = data.compareTo((E)curr.data) + 1; 
             } else {
                 // the child is null so the data is not currently in the tree
                 return null;
@@ -68,13 +67,15 @@ public class BSTree<E extends Comparable<E>> {
         if (curr.links[0] != null && curr.links[2] != null) {
             Node remove = curr;
             
-            // Take the leftmost node of the ride child
+            // Get the rightmost node of the left child
             curr = curr.links[0];
             while (curr.links[2] != null) { curr = curr.links[2];}
 
             // remove node by copying over it, remove extra
             removeNode((E)curr.data);
             remove.data = curr.data;
+            return true;
+    
         } // not internal, has at least 1 null child
 
         // point parent to curr
@@ -114,10 +115,10 @@ public class BSTree<E extends Comparable<E>> {
         for (int i = 0; i < curr.height; i++) {
             pre += "    ";
         }
-        // pre order recursion
-        String s = prettyPrint(curr.links[0]); // leftChild
+        // Tree rotated counterclockwise. so right children are at the top 
+        String s = prettyPrint(curr.links[2]); // right child
         s += pre + curr + "\n";
-        s += prettyPrint(curr.links[2]); // right child
+        s += prettyPrint(curr.links[0]); // leftChild
         return s;
     }
 }
