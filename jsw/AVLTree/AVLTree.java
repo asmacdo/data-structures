@@ -117,6 +117,22 @@ public class AVLTree<E extends Comparable<E>> {
         if (curr == this.root) {this.root = child;}
     }
 
+    public void doubleRotate(Node curr, int dir) {
+        int other = (dir + 2) % 4; // opposite of dir
+        Node child = curr.links[other];
+        Node gchild = child.links[dir];
+
+        gchild.links[1] = curr.links[1];
+        gchild.links[dir] = curr;
+        gchild.links[other] = child;
+        child.links[dir] = null;
+        curr.links[other] = null;
+        gchild.height = curr.height;
+        curr.height = child.height = gchild.height + 1;
+
+        if (curr == this.root) {this.root = gchild;}
+    }
+
     // Print sideways with spaces proportional to height. Looks like a tree!
     public String prettyPrint(Node curr) {
         String pre = "";

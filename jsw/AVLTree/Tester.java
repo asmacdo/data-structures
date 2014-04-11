@@ -23,11 +23,19 @@ public class Tester {
         ////intTree.addNode(8);
         ////System.out.println(intTree.prettyPrint(intTree.root));
 
-        //Test Rotation
-        Integer[] inOrder = {1, 2, 3};
-        AVLTree<Integer> badTree = new AVLTree<Integer>(inOrder);
-        System.out.println(badTree.prettyPrint(badTree.root));
-        badTree.singleRotate(badTree.root, 0);
-        System.out.println(badTree.prettyPrint(badTree.root));
+        ////Test Rotation
+        //Integer[] inOrder = {1, 2, 3};
+        //AVLTree<Integer> badTree = new AVLTree<Integer>(inOrder);
+        //System.out.println(badTree.prettyPrint(badTree.root));
+        //badTree.singleRotate(badTree.root, 0);
+        //System.out.println(badTree.prettyPrint(badTree.root));
+       
+        //Test Double Rotation
+        Integer[] nbcOrder = {1, 6, 5};
+        AVLTree<Integer> waveTree = new AVLTree<Integer>(nbcOrder);
+        System.out.println(waveTree.prettyPrint(waveTree.root));
+        waveTree.doubleRotate(waveTree.root, 0);
+        System.out.println(waveTree.prettyPrint(waveTree.root));
+        
     }
 }
