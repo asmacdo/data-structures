@@ -27,15 +27,42 @@ public class Tester {
         //Integer[] inOrder = {1, 2, 3};
         //AVLTree<Integer> badTree = new AVLTree<Integer>(inOrder);
         //System.out.println(badTree.prettyPrint(badTree.root));
-        //badTree.singleRotate(badTree.root, 0);
-        //System.out.println(badTree.prettyPrint(badTree.root));
        
-        //Test Double Rotation
-        Integer[] nbcOrder = {1, 6, 5};
-        AVLTree<Integer> waveTree = new AVLTree<Integer>(nbcOrder);
-        System.out.println(waveTree.prettyPrint(waveTree.root));
-        waveTree.doubleRotate(waveTree.root, 0);
-        System.out.println(waveTree.prettyPrint(waveTree.root));
+        ////Test Double Rotation
+        //Integer[] nbcOrder = {1, 6, 5};
+        //AVLTree<Integer> waveTree = new AVLTree<Integer>(nbcOrder);
+        //System.out.println(waveTree.prettyPrint(waveTree.root));
+        //waveTree.doubleRotate(waveTree.root, 0);
+        //System.out.println(waveTree.prettyPrint(waveTree.root));
+        //waveTree.addNode(7);
+        //System.out.println(waveTree.prettyPrint(waveTree.root));
+        //waveTree.addNode(8);
+        //System.out.println(waveTree.prettyPrint(waveTree.root));
+
+        ////Test rotate while add
+        //Integer [] a = {1};
+        //AVLTree<Integer> slowAdd = new AVLTree<Integer>(a);
+        //System.out.println(slowAdd.prettyPrint(slowAdd.root));
+        //slowAdd.addNode(2);
+        //System.out.println(slowAdd.prettyPrint(slowAdd.root));
+        //slowAdd.addNode(3);
+        //System.out.println(slowAdd.prettyPrint(slowAdd.root));
+        //slowAdd.addNode(5);
+        //System.out.println();
+        //System.out.println(slowAdd.prettyPrint(slowAdd.root)); 
+        //slowAdd.addNode(4);
+        //System.out.println();
+        //System.out.println(slowAdd.prettyPrint(slowAdd.root)); 
+        //slowAdd.addNode(6);
+        //System.out.println(slowAdd.prettyPrint(slowAdd.root)); 
+
+        //Single rotate with leaves
+        Integer [] a = {1, 2, 3, 4, 5};
+        AVLTree<Integer> leavesRot = new AVLTree<Integer>(a);
+        System.out.println(leavesRot);
+        leavesRot.addNode(6);
+        System.out.println(leavesRot);
+ 
         
     }
 }

@@ -1,3 +1,5 @@
+import java.lang.Math;
+
 public class AVLTree<E extends Comparable<E>> {
     Node root;
 
@@ -29,6 +31,21 @@ public class AVLTree<E extends Comparable<E>> {
                 curr.links[cmp] = newNode;
                 newNode.links[1] = curr; // set parent
                 curr.links[cmp].height = curr.height + 1;
+                --cmp;
+                while (curr != null) {
+                    if (curr.balance > 0) {
+                        curr.balance += Math.abs(cmp);
+                    } else if (curr.balance < 0) {
+                        curr.balance -= Math.abs(cmp);
+                    } else {
+                        curr.balance += cmp;
+                    }
+                    if (curr.balance > 1 || curr.balance < -1){
+                        rotate(curr);
+                        cmp = 0;
+                    }
+                    curr = curr.links[1];
+                }
                 return true;
             } else {
                 curr = curr.links[cmp];
@@ -105,30 +122,63 @@ public class AVLTree<E extends Comparable<E>> {
         if (curr.links[2] != null) {decrementHeight(curr.links[2]);}
     }
 
+    public void rotate(Node curr) {
+        System.out.println(curr.balance);
+        if (curr.balance > 1) {
+            System.out.println(curr.links[2].balance);
+            if (curr.links[2].balance > 0) {singleRotate(curr, 0);}
+            else {doubleRotate(curr, 0);}
+        } else {
+            if (curr.links[0].balance < 0) {singleRotate(curr, 2);}
+            else {doubleRotate(curr, 2);} 
+        }
+    }
+
     public void singleRotate(Node curr, int dir) {
+        System.out.println("single rotate");
         int other = (dir + 2) % 4; //opposite of dir
+   
         Node child = curr.links[other];
+        Node gchild = child.links[other];
+        Node leaf1 = curr.links[dir];
+        Node leaf2 = child.links[dir];
+
+        curr.links[other] = leaf2; 
         child.links[dir] = curr;
         child.links[1] = curr.links[1];
         curr.links[1] = child;
-        curr.links[other] = null;
         decrementHeight(child);
         curr.height = child.height + 1;
-        if (curr == this.root) {this.root = child;}
+        curr.balance = child.balance = child.links[dir].balance = 0;
+        if (leaf1 != null) {leaf1.height =  curr.height + 1;}
+        if (leaf2 != null) {leaf2.height = curr.height + 1;}
+        if (curr == this.root) {
+            this.root = child;
+        } else {child.links[1].links[other] = child;}
     }
 
     public void doubleRotate(Node curr, int dir) {
+        System.out.println("double rotate");
         int other = (dir + 2) % 4; // opposite of dir
         Node child = curr.links[other];
         Node gchild = child.links[dir];
 
         gchild.links[1] = curr.links[1];
+        int par = (gchild.links[1].links[0] == curr) ? 0 : 2;
+        gchild.links[1].links[par] = gchild;
+
         gchild.links[dir] = curr;
+        curr.links[1] = gchild;
+
         gchild.links[other] = child;
+        child.links[1] = gchild;
+
         child.links[dir] = null;
         curr.links[other] = null;
+
         gchild.height = curr.height;
         curr.height = child.height = gchild.height + 1;
+        curr.balance = child.balance = gchild.balance = 0;
 
         if (curr == this.root) {this.root = gchild;}
     }
@@ -147,5 +197,9 @@ public class AVLTree<E extends Comparable<E>> {
         s += pre + curr + "\n";
         s += prettyPrint(curr.links[0]); // leftChild
         return s;
+    }
+    
+    public String toString(){
+        return this.prettyPrint(this.root);
     }
 }
