@@ -123,7 +123,6 @@ public class AVLTree<E extends Comparable<E>> {
     }
 
     public void rotate(Node curr) {
-        System.out.println(curr.balance);
         if (curr.balance > 1) {
             System.out.println(curr.links[2].balance);
             if (curr.links[2].balance > 0) {singleRotate(curr, 0);}
@@ -162,10 +161,8 @@ public class AVLTree<E extends Comparable<E>> {
         int other = (dir + 2) % 4; // opposite of dir
         Node child = curr.links[other];
         Node gchild = child.links[dir];
-
+        while (gchild.links[dir] != null) {gchild = gchild.links[dir];}
         gchild.links[1] = curr.links[1];
-        int par = (gchild.links[1].links[0] == curr) ? 0 : 2;
-        gchild.links[1].links[par] = gchild;
 
         gchild.links[dir] = curr;
         curr.links[1] = gchild;
@@ -173,14 +170,21 @@ public class AVLTree<E extends Comparable<E>> {
         gchild.links[other] = child;
         child.links[1] = gchild;
 
-        child.links[dir] = null;
+        if (child.links[dir] == gchild) {
+            child.links[dir] = null;
+        } else {child.links[dir].links[dir] = null;}
+
         curr.links[other] = null;
 
         gchild.height = curr.height;
         curr.height = child.height = gchild.height + 1;
         curr.balance = child.balance = gchild.balance = 0;
-
+        if (curr.links[dir] != null) {curr.links[dir].height = curr.height + 1;}
         if (curr == this.root) {this.root = gchild;}
+        else {
+            int par = (gchild.links[1].links[0] == curr) ? 0 : 2;
+            gchild.links[1].links[par] = gchild;
+        }
     }
 
     // Print sideways with spaces proportional to height. Looks like a tree!

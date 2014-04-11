@@ -18,6 +18,6 @@ public class Node<E extends Comparable<E>> {
 
     public String toString() {
         String s = "";
-        return s + this.data; //+ ", " + this.balance;
+        return s + this.data + ", " + this.balance;
     }
 }
